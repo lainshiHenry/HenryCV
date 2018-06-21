@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<head>
+<title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <style>
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 450px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 20px;
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+    
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+    }
+    
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .row.content {height:auto;} 
+    }
+  </style>
+</head>
+<html>
+<body>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">Kuma Recipe Book</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="listhome.html">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+      <!--<ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      </ul>-->
+    </div>
+  </div>
+</nav>
+  
+<div class="container-fluid text-center">    
+  <div class="row content">
+    <div class="col-sm-12 text-left"> 
+      <h1 id="title">Title</h1>
+      <hr>
+      <div class="col-sm-6">
+         <div class="col-sm-7">
+            <h4 id="t">Source</h4>
+         </div>
+         <div class="col-sm-4">
+            <h5 id="source"></h5>
+         </div>
+         <div class="col-sm-7">
+            <h4 id="t">Notes</h4>
+         </div>
+         <div class="col-sm-4">
+            <h5 id="notes"></h5>
+         </div>
+       </div>
+      <div class="col-sm-6">
+         <div class="col-sm-7">
+           <h4>Servings</h4>
+         </div>
+         <div class="col-sm-3">
+           <h5 id="servings"></h5>
+         </div>
+         <div class="col-sm-2">
+         </div>
+         <div class="col-sm-7">
+           <h4>Prep time</h4>
+         </div>
+         <div class="col-sm-3">
+           <h5 id="prepTime"></h5>
+         </div>
+         <div class="col-sm-2">
+         </div>
+         <div class="col-sm-7">
+           <h4>Cook Time</h4>
+         </div>
+         <div class="col-sm-3">
+           <h5 id="cookTime"></h5>
+         </div>
+         <div class="col-sm-2">
+         </div>
+      </div>
+      <hr>
+      <div class="col-sm-12">
+         <h3 id="t">Ingredients</h3>
+         <div class="col-sm-12">
+            <h5 id="ingredients"></h5>
+         </div>
+      </div>
+      <hr>
+      <div class="col-sm-12">
+         <h3 id="t">Steps</h3>
+         <div class="col-sm-12">
+            <h5 id="steps"></h5>
+         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="demo"></div>
+
+<footer class="container-fluid text-center">
+  <p>Design and Programmed by Henry Le @2016</p>
+</footer>
+
+
+<script>
+function preparePage(recipeItem)
+{
+   var resultString;
+   document.getElementById("title").innerHTML = checkIfEmpty(recipeItem.title);
+   document.getElementById("servings").innerHTML = checkIfEmpty(recipeItem.serving);
+   document.getElementById("prepTime").innerHTML = checkIfEmpty(recipeItem.prepTime);
+   document.getElementById("cookTime").innerHTML = checkIfEmpty(recipeItem.cookTime);
+   document.getElementById("source").innerHTML = checkIfEmpty(recipeItem.source);
+   document.getElementById("notes").innerHTML = checkIfEmpty(recipeItem.notes);
+   
+   resultString = "";
+   for( var i = 0; i < recipeItem.ingredients.length; i++)
+   {
+      resultString += "<p>" + recipeItem.ingredients[i] + "</p>";
+   }
+   document.getElementById("ingredients").innerHTML = resultString;
+
+   resultString = "";
+   for( var i = 0; i < recipeItem.steps.length; i++)
+   {
+      resultString += "<p>" + (i+1) + ". " + recipeItem.steps[i] + "</p>";
+   }
+   document.getElementById("steps").innerHTML = resultString;
+}
+
+function checkIfEmpty(inputString)
+{
+   var result = inputString;
+   if( result == "" )
+   {
+       result = "?";
+   }
+   return result;
+}
+
+
+
+var xmlhttp = new XMLHttpRequest();
+var url = "https://api.myjson.com/bins/1y4se";
+var requestNum = location.search.substring(1).split("=");
+
+xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        var myArr = JSON.parse(xmlhttp.responseText);
+        debugger;
+        preparePage(myArr[Number(requestNum[1])]);
+    }
+};
+xmlhttp.open("GET", url, true);
+xmlhttp.send();
+
+</script>
+
+</body>
+</html>

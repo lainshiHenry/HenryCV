@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<style>
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+img {
+	max-width: 100px;
+    max-height: 100px;
+}
+
+tr:nth-child(even){background-color: rgb(175,175,175)}
+</style>
+</head>
+<body>
+
+<div id="demo"></div>
+
+<script>
+var itemList = [];
+function Item (brand) {
+	this.brand = brand;
+  this.logo = brand.replace(" ", "");
+}
+
+function addItem(brand) {
+	itemList.push(new Item(brand));
+}
+
+function toHTML() {
+  
+    itemList.sort(function(a, b){
+        var x = a.brand.toLowerCase();
+        var y = b.brand.toLowerCase();
+        if (x < y) {return -1;}
+        if (x > y) {return 1;}
+        return 0;
+    });
+  
+	let result = "<table>";
+    result += "<tr><th>Logo</th><th>Brand</th></tr>";
+    for (let i = 0; i < itemList.length; i++) {
+    	result += "<tr>";
+    	result += "<td><img src='img/" + itemList[i].logo + ".png' Alt='Logo'></td>"; //Logo
+        result += "<td>" + itemList[i].brand + "</td>"; //Brand
+        result += "</tr>";
+    }
+    result += "</table>";
+    
+    document.getElementById("demo").innerHTML = result;
+}
+  
+
+
+addItem("Fendi");
+addItem("Burberry");
+addItem("Eton");
+addItem("Vineyard Vines");
+addItem("Pierre Cardin");
+addItem("Ermenegildo Zenya");
+addItem("Ted Baker");
+addItem("Gucci");
+addItem("Cerruti 1881");
+addItem("Vitaliano Pancaldi");
+addItem("Giorgio Armani");
+addItem("Ralph Lauren");
+addItem("Turnbull Asser");
+addItem("Hermes Paris");
+addItem("Tommy Hilfiger");
+addItem("Massimo Bizzocchi");
+addItem("Pal Zileri");
+addItem("Salvatore Ferragamo");
+addItem("Louis Vuitton");
+addItem("Mark Shale");
+addItem("E Marinella");
+addItem("Battisti Napoli");
+addItem("Pendleton");
+addItem("Gianni Versace");
+
+toHTML();
+
+
+</script>
+
+</body>
+</html>
